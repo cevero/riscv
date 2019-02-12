@@ -56,7 +56,7 @@ module riscv_hwloop_controller
   // generate comparators. check for end address and the loop counter
   genvar i;
   generate
-    for (i = 0; i < N_REGS; i++) begin
+    for (i = 0; i < N_REGS; i++) begin : for_gen_comparators
       always @(*)
       begin
         pc_is_end_addr[i] = 1'b0;
