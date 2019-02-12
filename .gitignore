@@ -3,3 +3,6 @@
 /build
 /Bender.lock
 /Bender.local
+db*
+output_files*
+*bak
