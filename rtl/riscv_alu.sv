@@ -446,6 +446,7 @@ module riscv_alu
   //////////////////////////////////////////////////
   logic [31:0] fclass_result;
 
+generate
   if (FPU == 1) begin
      logic [7:0]   fclass_exponent;
      logic [22:0]  fclass_mantiassa;
@@ -502,6 +503,7 @@ module riscv_alu
      assign fclass_result        = '0;
      assign fp_canonical_nan     = '0;
   end
+endgenerate
 
 
   //////////////////////////////////////////////////
@@ -900,6 +902,7 @@ module riscv_alu
    logic [31:0] result_div;
    logic        div_ready;
 
+generate
    if (SHARED_INT_DIV == 1) begin
 
       assign result_div = '0;
@@ -948,6 +951,7 @@ module riscv_alu
          .OutVld_SO    ( div_ready         )
          );
    end
+endgenerate
 
   ////////////////////////////////////////////////////////
   //   ____                 _ _     __  __              //
