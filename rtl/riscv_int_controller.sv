@@ -57,11 +57,13 @@ module riscv_int_controller
   logic [4:0] irq_id_q;
   logic irq_sec_q;
 
-if(PULP_SECURE)
-  assign irq_enable_ext =  ((u_IE_i | irq_sec_i) & current_priv_lvl_i == PRIV_LVL_U) | (m_IE_i & current_priv_lvl_i == PRIV_LVL_M);
-else
-  assign irq_enable_ext =  m_IE_i;
-
+generate
+  if(PULP_SECURE)
+    assign irq_enable_ext =  ((u_IE_i | irq_sec_i) & current_priv_lvl_i == PRIV_LVL_U) | (m_IE_i & current_priv_lvl_i == PRIV_LVL_M);
+  else
+    assign irq_enable_ext =  m_IE_i;
+endgenerate
+  
   assign irq_req_ctrl_o = exc_ctrl_cs == IRQ_PENDING;
   assign irq_sec_ctrl_o = irq_sec_q;
   assign irq_id_ctrl_o  = irq_id_q;
@@ -109,7 +111,6 @@ else
 
     end
   end
-
 
 `ifndef SYNTHESIS
   // synopsys translate_off
