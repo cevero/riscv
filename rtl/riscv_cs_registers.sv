@@ -250,11 +250,11 @@ module riscv_cs_registers
 
    genvar j;
 
-
-if(PULP_SECURE==1) begin
+always_comb
+begin
+  if(PULP_SECURE==1) begin
   // read logic
-  always_comb
-  begin
+  
     case (csr_addr_i)
       // fcsr: Floating-Point Control and Status Register (frm + fflags).
       12'h001: csr_rdata_int = (FPU == 1) ? {27'b0, fflags_q}        : '0;
@@ -320,11 +320,8 @@ if(PULP_SECURE==1) begin
       default:
         csr_rdata_int = '0;
     endcase
-  end
-end else begin //PULP_SECURE == 0
+  end else begin //PULP_SECURE == 0
   // read logic
-  always_comb
-  begin
 
     case (csr_addr_i)
       // fcsr: Floating-Point Control and Status Register (frm + fflags).
@@ -374,10 +371,11 @@ end else begin //PULP_SECURE == 0
   end
 end //PULP_SECURE
 
-if(PULP_SECURE==1) begin
+always_comb
+begin
+  if(PULP_SECURE==1) begin
   // write logic
-  always_comb
-  begin
+  
     fflags_n                 = fflags_q;
     frm_n                    = frm_q;
     fprec_n                  = fprec_q;
@@ -561,11 +559,9 @@ if(PULP_SECURE==1) begin
       end //csr_restore_mret_i
       default:;
     endcase
-  end
-end else begin //PULP_SECURE == 0
+  end else begin
+ //PULP_SECURE == 0
   // write logic
-  always_comb
-  begin
     fflags_n                 = fflags_q;
     frm_n                    = frm_q;
     fprec_n                  = fprec_q;
@@ -838,18 +834,20 @@ end //PULP_SECURE
   assign PCCR_in[10] = id_valid_i & is_decoding_i & is_compressed_i;  // compressed instruction counter
   assign PCCR_in[11] = pipeline_stall_i;                              //extra cycles from elw
 
+ always_comb begin
   if (APU == 1) begin
      assign PCCR_in[PERF_APU_ID  ] = apu_typeconflict_i & ~apu_dep_i;
      assign PCCR_in[PERF_APU_ID+1] = apu_contention_i;
      assign PCCR_in[PERF_APU_ID+2] = apu_dep_i & ~apu_contention_i;
      assign PCCR_in[PERF_APU_ID+3] = apu_wb_i;
   end
+end
 
   // assign external performance counters
   generate
     genvar i;
     for(i = 0; i < N_EXT_CNT; i++)
-    begin
+    begin: for_external_performance_couters 
       assign PCCR_in[PERF_EXT_ID + i] = ext_counters_i[i];
     end
   endgenerate
