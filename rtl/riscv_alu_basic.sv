@@ -59,8 +59,7 @@ module riscv_alu_basic
   // bit reverse operand_a for left shifts and bit counting
   generate
     genvar k;
-    for(k = 0; k < 32; k++)
-    begin
+    for(k = 0; k < 32; k++) begin: for_operand_a_left_shifts
       assign operand_a_rev[k] = operand_a_i[31-k];
     end
   endgenerate
@@ -68,8 +67,7 @@ module riscv_alu_basic
   // bit reverse operand_a_neg for left shifts and bit counting
   generate
     genvar m;
-    for(m = 0; m < 32; m++)
-    begin
+    for(m = 0; m < 32; m++) begin: for_operand_a_neg_left_shifts
       assign operand_a_neg_rev[m] = operand_a_neg[31-m];
     end
   endgenerate
@@ -149,8 +147,7 @@ module riscv_alu_basic
   // bit reverse the shift_right_result for left shifts
   genvar       j;
   generate
-    for(j = 0; j < 32; j++)
-    begin
+    for(j = 0; j < 32; j++) begin: for_shift_right_result
       assign shift_left_result[j] = shift_right_result[31-j];
     end
   endgenerate
@@ -206,8 +203,7 @@ module riscv_alu_basic
   // comparison is done signed or unsigned
   genvar i;
   generate
-    for(i = 0; i < 4; i++)
-    begin
+    for(i = 0; i < 4; i++) begin: for_cmp_signed
       assign is_equal_vec[i]   = (operand_a_i[8*i+7:8*i] == operand_b_i[8*i+7:i*8]);
       assign is_greater_vec[i] = $signed({operand_a_i[8*i+7] & cmp_signed[i], operand_a_i[8*i+7:8*i]})
                                   >
