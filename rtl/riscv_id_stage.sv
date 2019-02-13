@@ -805,6 +805,7 @@ module riscv_id_stage
   // APU operand assignment  //
   /////////////////////////////
   // read regs
+  genvar i;
   generate
   if (APU == 1) begin : apu_op_preparation
 
@@ -907,7 +908,7 @@ module riscv_id_stage
      assign apu_write_regs_valid_o   = apu_write_regs_valid;
   end
      else begin
-       for (genvar i=0; i<APU_NARGS_CPU; i++) begin : apu_tie_off
+       for (i=0; i<APU_NARGS_CPU; i++) begin : apu_tie_off
          assign apu_operands[i]       = '0;
        end
        assign apu_waddr               = '0;
