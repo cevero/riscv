@@ -159,7 +159,7 @@ module riscv_register_file
 
     if (FPU == 1) begin
       // Floating point registers
-      for(l = 0; l < NUM_FP_WORDS; l++) begin
+      for(l = 0; l < NUM_FP_WORDS; l++) begin: number_of_fpus
         always_ff @(posedge clk, negedge rst_n)
         begin : fp_regs
           if (rst_n==1'b0)
