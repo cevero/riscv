@@ -165,8 +165,9 @@ module riscv_apu_disp (
   // Dependency checks
   //
   // There is a dependency if the register is equal to one of the instructions
+  genvar i;
   generate
-    for (genvar i = 0; i < 3; i++) begin
+    for (i = 0; i < 3; i++) begin: for_generate_dependency
       assign read_deps_req[i]      = (read_regs_i[i] == addr_req)      & read_regs_valid_i[i];
       assign read_deps_inflight[i] = (read_regs_i[i] == addr_inflight) & read_regs_valid_i[i];
       assign read_deps_waiting[i]  = (read_regs_i[i] == addr_waiting)  & read_regs_valid_i[i];
@@ -174,7 +175,7 @@ module riscv_apu_disp (
   endgenerate
 
   generate
-    for (genvar i = 0; i < 2; i++) begin
+    for (i = 0; i < 2; i++) begin: for_generate_dependency2
       assign write_deps_req[i]      = (write_regs_i[i] == addr_req)      & write_regs_valid_i[i];
       assign write_deps_inflight[i] = (write_regs_i[i] == addr_inflight) & write_regs_valid_i[i];
       assign write_deps_waiting[i]  = (write_regs_i[i] == addr_waiting)  & write_regs_valid_i[i];
